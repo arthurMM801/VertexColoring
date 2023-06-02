@@ -1,6 +1,3 @@
-from ortools.linear_solver import pywraplp
-from ortools.init import pywrapinit
-
 from Data import *
 from Solver import Solver
 
