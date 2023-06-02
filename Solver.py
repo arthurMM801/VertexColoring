@@ -25,15 +25,17 @@ class Solver:
         # Cores[i] Binario
         # Sera 1 se a cor i estiver na solução
         # 0 caso contrario
-        for cores in range(Data.numVertices):
-            cores.append(self.solver.BoolVar(cores))
-
-
-        # Restrições 
-
-
+        for cor in range(Data.numVertices):
+            self.cores.append(self.solver.BoolVar(str(cor)))
 
         print('Number of variables =', self.solver.NumVariables())
+
+        
+        # Restrições
+
+
+
+
 
 
 
