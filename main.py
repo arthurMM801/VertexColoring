@@ -5,9 +5,9 @@ from Solver import Solver
 def main():
     data = Data()
     data.le_grafo("entrada.txt")
-    #data.print_grafo()
+    data.print_grafo()
 
-    solver = Solver(data)
+    Solver(data)
 
 
 
