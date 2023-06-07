@@ -18,15 +18,16 @@ class Solver:
         # Sera 1 se o vertice i tiver a cor j
         # 0 caso contrario
         for vertice in range(Data.numVertices):
-            for maxColor in range(Data.numVertices):
-                label = "Vertice: "+str(maxColor)+" - Cor: "+str(vertice)
-                self.variaveis[vertice].append(self.solver.BoolVar(label))
+            for color in range(Data.numVertices):
+                label = "Vertice:"+str(vertice+1)+" Cor:"+str(color+1)
+                self.variaveis[vertice].append(self.solver.BoolVar(name=label))
 
         # Cores[i] Binario
         # Sera 1 se a cor i estiver na solução
         # 0 caso contrario
         for cor in range(Data.numVertices):
-            self.cores.append(self.solver.BoolVar(str(cor)))
+            label = "Cor "+str(cor+1)
+            self.cores.append(self.solver.BoolVar(name=label))
 
         print('Number of variables =', self.solver.NumVariables())
 
@@ -37,9 +38,9 @@ class Solver:
         # Vizinhos não podem ter a mesma cor
         for vertice in range(Data.numVertices):
             for vizinho in Data.grafo[vertice]:
-                if vizinho > vertice:
+                if vizinho > vertice+1:
                     for cor in range(Data.numVertices):
-                        self.solver.Add(self.variaveis[vertice][cor] + self.variaveis[vizinho][cor] <= 1)
+                        self.solver.Add(self.variaveis[vertice][cor] + self.variaveis[vizinho-1][cor] <= 1)
 
 
         # O vertice i so pode ter uma cor
