@@ -34,6 +34,6 @@ class Data():
         print()
 
     def print_grafo(self):
-        nx.draw(self.G, with_labels=True, node_color='yellow', node_size=1000)
+        nx.draw(self.G, with_labels=True, node_color='yellow', node_size=800)
         plt.show()
 

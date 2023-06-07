@@ -1,5 +1,6 @@
 from ortools.linear_solver import pywraplp
-from ortools.init import pywrapinit
+import matplotlib.pyplot as plt
+import networkx as nx
 
 
 class Solver:
@@ -68,19 +69,23 @@ class Solver:
         print(f'\nResolvendo com {self.solver.SolverVersion()}')
         status = self.solver.Solve()
 
+        vertice_colors = []
+
         if status == pywraplp.Solver.OPTIMAL:
             print('\nSolução:')
             print('Valor objetivo =', self.solver.Objective().Value())
-
             print("\nVertice_Cores")
             for i in range(Data.numVertices):
                 for j in range(Data.numVertices):
                     if self.variaveis[i][j].solution_value() == 1:
+                        vertice_colors.append(j)
                         print('Vértice', i+1, ' | Cor', j+1)
-
             print("\nCores")
             for i in range(len(self.cores)):
                 print(i+1,' = ', self.cores[i].solution_value())
+
+            # Transformar vertice_colors para hexadecimal
+            # self.printColoringGraph(Data.G, vertice_colors)
         else:
             print('O problema não tem solução otima.')
 
@@ -90,6 +95,12 @@ class Solver:
         print('Problema resolvido em %d nós de ramificação e limite' % self.solver.nodes())
         self.exportModel(self.solver, "Minimum_Vertex_Coloring_Model.txt")
 
+
     def exportModel(self, solver, output):
         with open(output, 'w') as file:
                 file.write(solver.ExportModelAsLpFormat(False))
+
+
+    def printColoringGraph(self, G, colors):
+        nx.draw(G, with_labels=True, node_color=colors, node_size=1000)
+        plt.show()
