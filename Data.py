@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+from Arco import *
 
 
 class Data():
@@ -8,6 +9,7 @@ class Data():
         self.numVertices = 0
         self.numArestas = 0
         self.grafo = []
+        self.edges = []
 
     def le_grafo(self, filename):
         with open(filename, "r") as f:
@@ -29,6 +31,8 @@ class Data():
                 self.grafo[v1-1].append(v2)
                 self.grafo[v2-1].append(v1)
                 self.G.add_edge(v1, v2)
+                self.edges.append(Arco(v1-1, v2-1))
+
 
         print("Grafo:\n", self.grafo)
         print()

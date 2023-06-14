@@ -1,6 +1,21 @@
 from ortools.linear_solver import pywraplp
 import matplotlib.pyplot as plt
 import networkx as nx
+import random
+
+def random_color():
+    hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f"]
+    hexadecimal = "#"
+    random_num = lambda max: random.randint(0, max-1)
+
+    for i in range(6):
+        hexadecimal += str(hex[random_num(len(hex))])
+
+    return ''.join(str(hexadecimal))
+
+
+def arr_color(n):
+    return [random_color() for i in range(n)]
 
 
 class Solver:
@@ -37,11 +52,9 @@ class Solver:
         # Restrições
 
         # Vizinhos não podem ter a mesma cor
-        for vertice in range(Data.numVertices):
-            for vizinho in Data.grafo[vertice]:
-                if vizinho > vertice+1:
-                    for cor in range(Data.numVertices):
-                        self.solver.Add(self.variaveis[vertice][cor] + self.variaveis[vizinho-1][cor] <= 1)
+        for arco in Data.edges:
+            for cor in range(Data.numVertices):
+                self.solver.Add(self.variaveis[arco.u][cor] + self.variaveis[arco.v-1][cor] <= 1)
 
 
         # O vertice i so pode ter uma cor
@@ -84,8 +97,13 @@ class Solver:
             for i in range(len(self.cores)):
                 print(i+1,' = ', self.cores[i].solution_value())
 
+            arr_colors = arr_color(Data.numVertices)
+            coloring_vertices = []
+            for color in vertice_colors:
+                coloring_vertices.append(arr_colors[color])
+
             # Transformar vertice_colors para hexadecimal
-            # self.printColoringGraph(Data.G, vertice_colors)
+            self.printColoringGraph(Data.G, coloring_vertices)
         else:
             print('O problema não tem solução otima.')
 
@@ -104,3 +122,5 @@ class Solver:
     def printColoringGraph(self, G, colors):
         nx.draw(G, with_labels=True, node_color=colors, node_size=1000)
         plt.show()
+
+
