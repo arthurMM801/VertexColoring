@@ -54,7 +54,7 @@ class Solver:
         # Vizinhos não podem ter a mesma cor
         for arco in Data.edges:
             for cor in range(Data.numVertices):
-                self.solver.Add(self.variaveis[arco.u][cor] + self.variaveis[arco.v-1][cor] <= 1)
+                self.solver.Add(self.variaveis[arco.u-1][cor] + self.variaveis[arco.v-1][cor] <= 1)
 
 
         # O vertice i so pode ter uma cor
